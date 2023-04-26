@@ -19,5 +19,14 @@ pipeline {
 	      }
 	    }
 	}
+      stage('Docker Build and Push') {
+	    steps {
+	     	withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+		   sh 'printenv'
+		   sh 'crictl build -t pbartczak/numeric-app:""$GIT_COMMIT"" .'
+		   sh 'crictl push pbartczak/numeric-app:""$GIT_COMMIT""'
+		}
+	    }
+        }
     }
 }
